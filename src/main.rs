@@ -15,29 +15,29 @@ impl ColoredRect {
             velocity: [0.3, 0.3]
         }
     }
-    fn update(&mut self, size: (f64, f64)) {
-        self.color[0] = Self::update_color(self.color[0]);
-        self.color[1] = Self::update_color(self.color[1]);
-        self.color[2] = Self::update_color(self.color[2]);
+    fn update(&mut self, dt: f64, size: (f64, f64)) {
+        self.color[0] = Self::update_color(dt as f32, self.color[0]);
+        self.color[1] = Self::update_color(dt as f32, self.color[1]);
+        self.color[2] = Self::update_color(dt as f32, self.color[2]);
         // X updates
         if self.position[0] + self.position[2] >= size.0 ||
             self.position[0] < 0.0 {
             self.velocity[0] = -self.velocity[0];
         }
-        self.position[0] += self.velocity[0];
+        self.position[0] += self.velocity[0] * dt * 120.0;
 
         // Y updates
         if self.position[1] + self.position[3] >= size.1 || 
             self.position[1] < 0.0 {
             self.velocity[1] = -self.velocity[1];
         } 
-        self.position[1] += self.velocity[1];
+        self.position[1] += self.velocity[1] * dt * 120.0;
     }
-    fn update_color(color: f32)->f32 {
+    fn update_color(dt: f32, color: f32)->f32 {
         if color <= 0.0 {
             1.0
         } else {
-            color - 0.001
+            color - 0.001 * dt * 120.0
         }
     }
 }
@@ -60,7 +60,7 @@ fn main() {
                 });
             }
             Event::Update(u) => {
-                rect.update((640.0, 480.0));
+                rect.update(u.dt, (640.0, 480.0));
             }
             _ => {}
         }
