@@ -1,5 +1,5 @@
 [root]
-name = "piston-hello"
+name = "piston-flying-square"
 version = "0.1.0"
 dependencies = [
  "piston_window 0.61.0 (registry+https://github.com/rust-lang/crates.io-index)",
