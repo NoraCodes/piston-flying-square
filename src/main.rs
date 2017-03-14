@@ -10,15 +10,15 @@ struct ColoredRect {
 impl ColoredRect {
     fn new() -> Self {
         ColoredRect {
-            color: [1.0, 0.5, 0.25, 1.0],
+            color: [1.0, 1.0, 1.0, 1.0],
             position: [0.0, 0.0, 100.0, 100.0],
             velocity: [0.3, 0.3]
         }
     }
     fn update(&mut self, dt: f64, size: (f64, f64)) {
-        self.color[0] = Self::update_color(dt as f32, self.color[0]);
-        self.color[1] = Self::update_color(dt as f32, self.color[1]);
-        self.color[2] = Self::update_color(dt as f32, self.color[2]);
+        self.color[0] = Self::update_color(dt as f32, self.color[0], 0.001);
+        self.color[1] = Self::update_color(dt as f32, self.color[1], 0.002);
+        self.color[2] = Self::update_color(dt as f32, self.color[2], 0.003);
         // X updates
         if self.position[0] + self.position[2] >= size.0 ||
             self.position[0] < 0.0 {
@@ -33,11 +33,11 @@ impl ColoredRect {
         } 
         self.position[1] += self.velocity[1] * dt * 120.0;
     }
-    fn update_color(dt: f32, color: f32)->f32 {
+    fn update_color(dt: f32, color: f32, change: f32)->f32 {
         if color <= 0.0 {
             1.0
         } else {
-            color - 0.001 * dt * 120.0
+            color - change * dt * 120.0
         }
     }
     fn change_velocity(&mut self, factor: f64) {
@@ -49,7 +49,7 @@ impl ColoredRect {
 fn main() {
     let mut rect = ColoredRect::new();
     let mut window: PistonWindow =
-        WindowSettings::new("Hello Piston!", [640, 480])
+        WindowSettings::new("Flying Square", [640, 480])
         .exit_on_esc(true)
         .vsync(true)
         .build().unwrap();
@@ -81,6 +81,9 @@ fn main() {
                                    }
                                    Key::S => {
                                        rect.change_velocity(0.9);
+                                   }
+                                   Key::F5 => {
+                                       rect = ColoredRect::new();
                                    }
                                    _ => {} // Catch all keys
                                };
