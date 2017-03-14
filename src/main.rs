@@ -40,6 +40,10 @@ impl ColoredRect {
             color - 0.001 * dt * 120.0
         }
     }
+    fn change_velocity(&mut self, factor: f64) {
+        self.velocity[0] *= factor;
+        self.velocity[1] *= factor;
+    }
 }
 
 fn main() {
@@ -66,7 +70,28 @@ fn main() {
             Event::Update(u) => {
                 rect.update(u.dt, window_size);
             }
-            _ => {}
+            Event::Input(i) => {
+                match i {
+                    Input::Press(b) => {
+                       match b {
+                           Button::Keyboard(k) => {
+                               match k {
+                                   Key::W => {
+                                       rect.change_velocity(1.1);
+                                   }
+                                   Key::S => {
+                                       rect.change_velocity(0.9);
+                                   }
+                                   _ => {} // Catch all keys
+                               };
+                           }
+                           _ => {} // Catch non-keyboard buttons
+                       };
+                    }
+                    _ => {} // Catch non-buttons actions
+                }
+            }
+            _ => {} // Catch uninteresting events
         }
     }
 }
