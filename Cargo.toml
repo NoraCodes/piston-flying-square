@@ -5,3 +5,4 @@ authors = ["SilverWingedSeraph <lfstindall@gmail.com>"]
 
 [dependencies]
 piston_window = "0.61.0"
+find_folder = "*"
