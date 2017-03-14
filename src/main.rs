@@ -49,9 +49,13 @@ fn main() {
         .exit_on_esc(true)
         .vsync(true)
         .build().unwrap();
+
+    let mut window_size: (f64, f64) = (0.0, 0.0);
+
     while let Some(e) = window.next() {
         match e {
-            Event::Render(_) => {
+            Event::Render(r) => {
+                window_size = (r.width as f64, r.height as f64);
                 window.draw_2d(&e, |c, g| {
                     clear([1.0; 4], g); // Clear to white
                     rectangle(rect.color, // Color
@@ -60,7 +64,7 @@ fn main() {
                 });
             }
             Event::Update(u) => {
-                rect.update(u.dt, (640.0, 480.0));
+                rect.update(u.dt, window_size);
             }
             _ => {}
         }
