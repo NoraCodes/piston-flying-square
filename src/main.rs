@@ -33,7 +33,7 @@ fn main() {
 
     while let Some(e) = window.next() {
         match e {
-            Event::Render(r) => {
+            Input::Render(r) => {
                 window_size = (r.width as f64, r.height as f64);
                 window.draw_2d(&e, |c, g| {
                     clear([1.0; 4], g); // Clear to white
@@ -46,33 +46,28 @@ fn main() {
                         g);
                 });
             }
-            Event::Update(u) => {
+            Input::Update(u) => {
                 rect.update(u.dt, window_size);
                 fpscounter.update(u.dt, 0.25);
             }
-            Event::Input(i) => {
-                match i {
-                    Input::Press(b) => {
-                       match b {
-                           Button::Keyboard(k) => {
-                               match k {
-                                   Key::W => {
-                                       rect.change_velocity(1.1);
-                                   }
-                                   Key::S => {
-                                       rect.change_velocity(0.9);
-                                   }
-                                   Key::F5 => {
-                                       rect = ColoredRect::new();
-                                   }
-                                   _ => {} // Catch all keys
-                               };
-                           }
-                           _ => {} // Catch non-keyboard buttons
-                       };
+            Input::Press(b) => {
+                match b {
+                    Button::Keyboard(k) => {
+                        match k {
+                            Key::W => {
+                                rect.change_velocity(1.1);
+                            }
+                            Key::S => {
+                                rect.change_velocity(0.9);
+                            }
+                            Key::F5 => {
+                                rect = ColoredRect::new();
+                            }
+                            _ => {} // Catch all keys
+                        };
                     }
-                    _ => {} // Catch non-buttons actions
-                }
+                    _ => {} // Catch non-keyboard buttons
+                };
             }
             _ => {} // Catch uninteresting events
         }
