@@ -6,3 +6,4 @@ authors = ["SilverWingedSeraph <lfstindall@gmail.com>"]
 [dependencies]
 piston_window = "0.64.0"
 find_folder = "*"
+update_rate = "1.0"

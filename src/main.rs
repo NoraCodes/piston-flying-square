@@ -1,13 +1,12 @@
 extern crate piston_window;
 extern crate find_folder;
+extern crate update_rate;
 use piston_window::*;
 use text::Text;
+use update_rate::UpdateRateCounter;
 
 mod coloredrect;
 use coloredrect::ColoredRect;
-
-mod fpscounter;
-use fpscounter::FPSCounter;
 
 fn get_glyphs(window: &PistonWindow) -> Glyphs {
     let assets = find_folder::Search::ParentsThenKids(3, 3)
@@ -28,7 +27,7 @@ fn main() {
     let mut glyphs = get_glyphs(&window);
 
     let mut window_size: (f64, f64) = (0.0, 0.0);
-    let mut fpscounter = FPSCounter::new();
+    let mut fpscounter = UpdateRateCounter::new(60);
     let fpsfont = Text::new(10);
 
     while let Some(e) = window.next() {
@@ -40,15 +39,15 @@ fn main() {
                     rectangle(rect.color, // Color
                               rect.position, // Position/size
                               c.transform, g);
-                    fpsfont.draw(&format!("{:.0} FPS", fpscounter.get_fps()), 
+                    fpsfont.draw(&format!("{:.0} FPS", fpscounter.rate()), 
                         &mut glyphs, &c.draw_state,
                         c.transform.trans(10.0, 12.0), // Set the position of the drawing
                         g);
                 });
             }
             Input::Update(u) => {
+                fpscounter.update();
                 rect.update(u.dt, window_size);
-                fpscounter.update(u.dt, 0.25);
             }
             Input::Press(b) => {
                 match b {
