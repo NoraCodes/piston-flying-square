@@ -4,6 +4,6 @@ version = "0.1.0"
 authors = ["SilverWingedSeraph <lfstindall@gmail.com>"]
 
 [dependencies]
-piston_window = "0.64.0"
-find_folder = "*"
-update_rate = "1.0"
+piston_window = "0.85.0"
+find_folder = "0.3.0"
+update_rate = "2.0.0"
